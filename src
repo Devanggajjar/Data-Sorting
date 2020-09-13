@@ -1,2 +1,62 @@
-This will fetch the data from the file and will sort the names in ascending order(A to Z).
-Code is written in  C language.
+/*
+ * Sorting.c
+ *
+ *  Created on: Mar. 13, 2020
+ *  Author: Devang Gajjar
+ */
+ /*
+ -----------------------------------------------------------------
+ This code sort the names in list in ascending order(A to Z).
+ ------------------------------------------------------------------
+ */
+/*Sorting-of-any-data-file*/
+/*Sorting is done wth the use of qsort() function and compare function()*/
+
+#define _CRT_SECURE_NO_DEPRECATE // Used when warning sign pops-up in compiler
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+void sortData(void*array, unsigned count);
+int main(void)
+{
+	static const char sourcefile[100] = "people.txt";
+	char *array1[100], line[100], ch;
+	int index = 0, count;
+	int j = 0;
+	FILE *dev;
+	int totalsize = 0;
+	dev = fopen(sourcefile, "r");  // open the text file                       
+	totalsize = sizeof line;   //open file
+	if (dev != NULL) // if text file found
+	{
+		while (fgets(line, totalsize, dev) != NULL)
+		{
+			if (index <= sizeof array1)
+			{
+				array1[index] = _strdup(line);
+				index++; //printf("%s", _strdup(line));
+			}
+		}
+		fclose(dev);
+		sortData(array1, index);
+		count = index;
+		for (j = 0; j < count; j++)
+		{
+			printf("%s\n", array1[j]);
+		}
+	}
+	else
+	{
+		printf("File not found");
+	}
+	return 0;
+}
+int compare(const void *arg1, const void *arg2)  //Comparing the data
+{
+	return (strcmp(*(char **)arg1, *(char **)arg2));
+}
+void sortData(void *array1, unsigned count)  // sorting the data by qsort() function
+{
+	qsort(array1, count, sizeof(const char *), compare);
+}
